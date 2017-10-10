@@ -1,7 +1,8 @@
 package com.example.spring2kotlintrial.api
 
-import org.hamcrest.CoreMatchers
-import org.hamcrest.MatcherAssert
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.notNullValue
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,15 +13,16 @@ import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AppControllerIntTest {    @Autowired
-lateinit var testRestTemplate: TestRestTemplate
+class AppControllerIntTest {
+    @Autowired
+    lateinit var testRestTemplate: TestRestTemplate
 
     @Test
     fun `should say hello world integration test`() {
         val result = testRestTemplate.getForEntity("/", String::class.java)
 
-        MatcherAssert.assertThat(result, CoreMatchers.`is`(CoreMatchers.notNullValue()))
-        MatcherAssert.assertThat(result.statusCode, CoreMatchers.`is`(HttpStatus.OK))
-        MatcherAssert.assertThat(result.body, CoreMatchers.`is`("Hello World!"))
+        assertThat(result, `is`(notNullValue()))
+        assertThat(result.statusCode, `is`(HttpStatus.OK))
+        assertThat(result.body, `is`("Hello World!"))
     }
 }
