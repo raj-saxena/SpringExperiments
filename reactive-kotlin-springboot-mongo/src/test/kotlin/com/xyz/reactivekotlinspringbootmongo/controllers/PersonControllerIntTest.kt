@@ -1,7 +1,7 @@
 package com.xyz.reactivekotlinspringbootmongo.controllers
 
-import com.xyz.reactivekotlinspringbootmongo.Person
-import com.xyz.reactivekotlinspringbootmongo.PersonReactiveRepository
+import com.xyz.reactivekotlinspringbootmongo.models.Person
+import com.xyz.reactivekotlinspringbootmongo.repositories.PersonReactiveRepository
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test

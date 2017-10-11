@@ -1,4 +1,4 @@
-package com.xyz.reactivekotlinspringbootmongo
+package com.xyz.reactivekotlinspringbootmongo.models
 
 import java.time.LocalDate
 

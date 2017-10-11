@@ -1,5 +1,6 @@
-package com.xyz.reactivekotlinspringbootmongo
+package com.xyz.reactivekotlinspringbootmongo.repositories
 
+import com.xyz.reactivekotlinspringbootmongo.models.Person
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository
 import reactor.core.publisher.Mono
 
