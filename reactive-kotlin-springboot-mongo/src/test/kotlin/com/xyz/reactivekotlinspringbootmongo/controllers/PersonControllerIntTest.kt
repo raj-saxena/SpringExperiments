@@ -1,7 +1,7 @@
 package com.xyz.reactivekotlinspringbootmongo.controllers
 
-import com.xyz.reactivekotlinspringbootmongo.Person
-import com.xyz.reactivekotlinspringbootmongo.PersonReactiveRepository
+import com.xyz.reactivekotlinspringbootmongo.models.Person
+import com.xyz.reactivekotlinspringbootmongo.repositories.PersonReactiveRepository
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -14,6 +14,7 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.bodyToFlux
+import org.springframework.web.reactive.function.client.bodyToMono
 import reactor.core.publisher.Flux
 import reactor.test.test
 import java.time.LocalDate
@@ -54,6 +55,18 @@ class PersonControllerIntTest {
         persons.test()
                 .expectNext(personBar)
                 .expectNext(personBaz)
+                .expectNext(personFoo)
+                .verifyComplete()
+    }
+
+    @Test
+    internal fun `should find person by firstName`() {
+        val person = webClient.get().uri("/api/person?firstName=Foo")
+                .accept(APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono<Person>()
+
+        person.test()
                 .expectNext(personFoo)
                 .verifyComplete()
     }
