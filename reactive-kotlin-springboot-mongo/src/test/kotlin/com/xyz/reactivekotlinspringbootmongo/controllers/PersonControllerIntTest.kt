@@ -2,6 +2,8 @@ package com.xyz.reactivekotlinspringbootmongo.controllers
 
 import com.xyz.reactivekotlinspringbootmongo.models.Person
 import com.xyz.reactivekotlinspringbootmongo.repositories.PersonReactiveRepository
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -10,12 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.bodyToFlux
 import org.springframework.web.reactive.function.client.bodyToMono
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import reactor.test.test
 import java.time.LocalDate
 import java.util.*
@@ -42,6 +46,7 @@ class PersonControllerIntTest {
         personReactiveRepository.saveAll(Flux.just(personFoo, personBar, personBaz))
                 .then()
                 .block()
+
     }
 
     @Test
@@ -69,6 +74,25 @@ class PersonControllerIntTest {
         person.test()
                 .expectNext(personFoo)
                 .verifyComplete()
+    }
+
+    @Test
+    internal fun `should add a person`() {
+        val fizz = "Fizz"
+        val personFizz = Person(fizz, fizz, LocalDate.now().minusYears(1))
+
+        val response = webClient.post().uri("/api/person")
+                .accept(APPLICATION_JSON)
+                .body(Mono.just(personFizz), Person::class.java)
+                .exchange().map { it.statusCode() }
+
+        response.test()
+                .expectNext(CREATED)
+                .verifyComplete()
+
+        response.then().block()
+
+        personReactiveRepository.findByFirstName(fizz).map { assertThat(it, `is`(personFizz)) }.then().block()
     }
 
     @AfterAll
