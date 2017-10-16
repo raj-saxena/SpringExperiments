@@ -46,4 +46,5 @@ dependencies {
 
 	//Mongo
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb-reactive')
+	compile('de.flapdoodle.embed:de.flapdoodle.embed.mongo')
 }
