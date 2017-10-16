@@ -8,4 +8,8 @@ class PersonService {
     fun getPersons(): List<Person> {
         return emptyList()
     }
+
+    fun addPerson(person: Person): Person {
+        return person
+    }
 }
