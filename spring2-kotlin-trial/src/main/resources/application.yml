@@ -1,0 +1,12 @@
+spring:
+  profiles.active: default
+  jackson.default-property-inclusion: non_null
+  data.mongodb.database: spring2-kotlin-trial
+
+---
+spring:
+  profiles: default
+---
+spring:
+  profiles: docker
+  data.mongodb.host: ${MYMONGODB_PORT_27017_TCP_ADDR}
